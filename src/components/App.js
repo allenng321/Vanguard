@@ -2,12 +2,12 @@ import React from 'react'
 import Grid from '@mui/material/Grid';
 import LeftBar from './LeftBar.js'
 import Divider from '@mui/material/Divider';
-
 import '../assets/css/App.css'
 
-function App() {
+export default function App() {
   return (
-    <div>
+      <div>
+
       <Grid container spacing={2}>
         <Grid item xs={3}>
           <LeftBar/>
@@ -20,9 +20,6 @@ function App() {
 
         </Grid>
       </Grid>
-
     </div>
   )
 }
-
-export default App
