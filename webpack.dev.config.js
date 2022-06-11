@@ -7,6 +7,12 @@ const { spawn } = require('child_process')
 const defaultInclude = path.resolve(__dirname, 'src')
 
 module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'index_bundle.js',
+    publicPath: '/'
+  },
   module: {
     rules: [
       {
@@ -31,6 +37,11 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.js'
+    })
+  ],
   target: 'electron-renderer',
   plugins: [
     new HtmlWebpackPlugin(),
@@ -46,6 +57,7 @@ module.exports = {
       chunks: false,
       children: false
     },
+    historyApiFallback: true,
     before() {
       spawn(
         'electron',
@@ -55,5 +67,5 @@ module.exports = {
       .on('close', code => process.exit(0))
       .on('error', spawnError => console.error(spawnError))
     }
-  }
+  },
 }
