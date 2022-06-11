@@ -1,3 +1,48 @@
 /* Main CSS file */
 
 @import '_example/_example.css';
+
+html, body {
+  background-color: #36393E;
+  font-family: 'Roboto', Courier, monospace;
+}
+
+.left-bar {
+  margin-left: 2.5rem;
+}
+
+.info-box {
+  margin-top: 1rem;
+}
+
+.info-box h2{
+  color: #B8C7F4;
+  font-size: 21px;
+}
+
+.info-box p {
+  color: #dddddd;
+  font-size: 14px;
+  margin: 0.25rem;
+}
+
+#avatar {
+  margin-top: 0.5rem;
+}
+
+#info-box-divider {
+  margin-top: 25px;
+  height: 1px;
+  width: 300px;
+  background-color: #dddddd;
+}
+
+#left-bar-divider {
+  left: unset;
+  bottom: unset;
+  margin-top: 1.8rem;
+  margin-left: 2rem;
+  background-color: #dddddd;
+  width: 1px;
+  height: 700px;
+}
