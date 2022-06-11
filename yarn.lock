@@ -1772,6 +1772,13 @@
     "picocolors" "^1.0.0"
     "postcss-value-parser" "^4.2.0"
 
+"autosuggest-highlight@^3.2.1":
+  "integrity" "sha512-PZk89g6W6cyE+fbnWF2CCIUAmP55o5wceKVqqL6oosgvbWHKa2Mes6nRC/PGj7OwqBgIy65Nd21Dw3h6qodOmg=="
+  "resolved" "https://registry.npmjs.org/autosuggest-highlight/-/autosuggest-highlight-3.2.1.tgz"
+  "version" "3.2.1"
+  dependencies:
+    "diacritic" "0.0.2"
+
 "babel-loader@^8.2.5":
   "integrity" "sha512-OSiFfH89LrEMiWd4pLNqGz4CwJDtbs2ZVc+iGu2HrkRfPxId9F2anQj38IxWpmRfsUY0aBZYi1EFcd3mhtRMLQ=="
   "resolved" "https://registry.npmjs.org/babel-loader/-/babel-loader-8.2.5.tgz"
@@ -2624,6 +2631,11 @@
   "integrity" "sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw=="
   "resolved" "https://registry.npmjs.org/detect-node/-/detect-node-2.0.4.tgz"
   "version" "2.0.4"
+
+"diacritic@0.0.2":
+  "integrity" "sha512-iQCeDkSPwkfwWPr+HZZ49WRrM2FSI9097Q9w7agyRCdLcF9Eh2Ek0sHKcmMWx2oZVBjRBE/sziGFjZu0uf1Jbg=="
+  "resolved" "https://registry.npmjs.org/diacritic/-/diacritic-0.0.2.tgz"
+  "version" "0.0.2"
 
 "dir-compare@^2.4.0":
   "integrity" "sha512-l9hmu8x/rjVC9Z2zmGzkhOEowZvW7pmYws5CWHutg8u1JgvsKWMx7Q/UODeu4djLZ4FgW5besw5yvMQnBHzuCA=="

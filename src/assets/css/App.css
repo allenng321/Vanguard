@@ -33,7 +33,7 @@ html, body {
 #info-box-divider {
   margin-top: 25px;
   height: 1px;
-  width: 300px;
+  width: 225px;
   background-color: #dddddd;
 }
 
@@ -45,4 +45,18 @@ html, body {
   background-color: #dddddd;
   width: 1px;
   height: 700px;
+}
+
+.right-section-pages {
+  margin-top: 1.75rem;
+}
+
+.right-section-pages h1 {
+  font-size: 26px;
+  color: #B8C7F4;
+}
+
+.right-section-pages p {
+  font-size: 14px;
+  color: #dddddd;
 }
