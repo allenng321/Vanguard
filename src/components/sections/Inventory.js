@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -17,6 +17,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid'
+import { db } from 'sneaks-api/models/Sneaker';
 
 // Init MongoDB
 const { MongoClient } = require("mongodb");
@@ -33,16 +34,9 @@ run();
 const database = client.db('vanguard-app')
 const sneakerData = database.collection('sneaker-data')
 
-const dataToAdd = [
-  {key: 1, name: 'Air Jordan 2', size: 5, used: 'Yes', buyingPrice: 1, listingPrice: 1},
-];
+ function Inventory() {
 
-function Inventory() {
-
-  const [sneakerList, setSneakerList] = useState(
-    [{key: 1, name: 'Air Jordan 2', size: 5, used: 'Yes', buyingPrice: 1, listingPrice: 1},
-  ]
-    )
+  const [sneakerList, setSneakerList] = useState([{key: 1, name: 'Jordan 1 Low Bred Toe', size: 9, used: 'No', buyingPrice: 129, listingPrice: 249}])
   const [sneakerName, setSneakerName] = useState('')
   const [size, setSize] = useState('')
   const [used, setUsed] = useState('No')
@@ -53,31 +47,52 @@ function Inventory() {
 
   const [searchText, setSearchText] = useState('');
 
-  function AddSneaker(name, size, used, buyingPrice, listingPrice,) {
-    let newRes = [];
-    sneakerList.forEach(sneaker => {
-      newRes.push(sneaker)
+  async function AddSneaker(name, size, used, buyingPrice, listingPrice,) {
+    const client = new MongoClient(uri);
+    await client.connect();
+    const database = client.db('vanguard-app')
+    const sneakerData = database.collection('sneaker-data')
+
+
+    const allSneakers = await sneakerData.find().toArray();
+
+    let highestKey= -1;
+    allSneakers.forEach(sneaker => {
+      let currentKey = parseInt(sneaker.key)
+      if (highestKey < currentKey) {
+        highestKey = currentKey
+      }
     });
-    newRes.push({key: newRes[newRes.length - 1].key + 1, name: name, size: size, used: used, buyingPrice: buyingPrice, listingPrice: listingPrice })
-    setSneakerList(newRes)
+
+    sneakerData.insertOne({key: highestKey + 1, name: name, size: size, used: used, buyingPrice: buyingPrice, listingPrice: listingPrice});
+
+    const allSneakersToUpdate = await sneakerData.find().toArray();
+
+    setSneakerList(allSneakersToUpdate)
 
     // Refresh Table
     setBuyingPrice(0)
 
     // Update Profit
     calculateProfit()
-
   }
 
-  function DeleteSneaker(key) {
-    let newRes = [];
-    sneakerList.forEach(sneaker => {
-      if (sneaker.key !== key) {
-        newRes.push(sneaker);
-      }
-    });
+  async function DeleteSneaker(key) {
+    const client = new MongoClient(uri);
+    await client.connect();
+    const database = client.db('vanguard-app')
+    const sneakerData = database.collection('sneaker-data')
 
-    setSneakerList(newRes);
+    await sneakerData.deleteOne({key: key})
+    const allSneakers = await sneakerData.find().toArray();
+
+    setSneakerList(allSneakers);
+
+    // Refresh Table
+    setBuyingPrice(0)
+
+    // Update Profit
+    calculateProfit()
   }
 
   function handleUsedCheckbox(event) {
@@ -91,19 +106,23 @@ function Inventory() {
       }
   }
 
-  function calculateProfit() {
-    setInterval(() => {
+  async function calculateProfit() {
+    const client = new MongoClient(uri);
+      await client.connect();
+      const database = client.db('vanguard-app')
+      const sneakerData = database.collection('sneaker-data')
+
+      const allSneakers = await sneakerData.find().toArray();
+
       let profitValueToAdd = 0
-      sneakerList.forEach(sneaker => {
+      allSneakers.forEach(sneaker => {
       let sneakerRealizedProfit = sneaker.listingPrice - sneaker.buyingPrice;
       profitValueToAdd += sneakerRealizedProfit;
-      console.log(sneaker)
       });
 
       const newProfit = profitValueToAdd
 
       setTotalProfit(newProfit);
-    }, 1000)
   }
 
   function updateFilteredSneakerList(searchText) {
