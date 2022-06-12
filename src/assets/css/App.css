@@ -2,6 +2,10 @@
 
 @import '_example/_example.css';
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 html, body {
   background-color: #36393E;
   font-family: 'Roboto', Courier, monospace;
@@ -59,4 +63,16 @@ html, body {
 .right-section-pages p {
   font-size: 14px;
   color: #dddddd;
+}
+
+.inventory-stats h2 {
+  color: #dddddd;
+  margin: 0;
+  font-size: 15px;
+  width: 200px;
+}
+
+#inventory-grid {
+  margin-top: 0;
+
 }

@@ -13,6 +13,11 @@ module.exports = {
     filename: 'index_bundle.js',
     publicPath: '/'
   },
+  resolve: {
+    alias: {
+      core: path.join(__dirname, './src/index.js'),
+    },
+  },
   module: {
     rules: [
       {

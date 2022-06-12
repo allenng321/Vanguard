@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -19,6 +19,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid'
 
 import { useForm, Controller } from "react-hook-form";
 
@@ -28,6 +29,7 @@ const dataToAdd = [
 ];
 
 function Inventory() {
+
   const [sneakerList, setSneakerList] = useState(
     [{key: 1, name: 'Air Jordan 2', size: 5, used: 'Yes', buyingPrice: 100, listingPrice: 12},
   ]
@@ -38,6 +40,7 @@ function Inventory() {
   const [usedChecked, setUsedChecked] = useState(false);
   const [buyingPrice, setBuyingPrice] = useState(0)
   const [listingPrice, setListingPrice] = useState(0)
+  const [totalProfit, setTotalProfit] = useState(0)
 
   function AddSneaker(name, size, used, buyingPrice, listingPrice,) {
     dataToAdd.push({key: dataToAdd[dataToAdd.length - 1].key + 1, name: name, size: size, used: used, buyingPrice: buyingPrice, listingPrice: listingPrice })
@@ -46,7 +49,8 @@ function Inventory() {
     // Refresh Table
     setBuyingPrice(0)
 
-    console.log("Name " + name)
+    // Update Profit
+    calculateProfit()
 
   }
 
@@ -59,6 +63,18 @@ function Inventory() {
       else {
         setUsed("No");
       }
+  }
+
+  function calculateProfit() {
+    let profitValueToAdd = 0
+    sneakerList.forEach(sneaker => {
+      let sneakerRealizedProfit = sneaker.listingPrice - sneaker.buyingPrice;
+      profitValueToAdd += sneakerRealizedProfit;
+    });
+
+    const newProfit = profitValueToAdd
+
+    setTotalProfit(newProfit);
   }
 
   const { register, handleSubmit, control } = useForm();
@@ -152,12 +168,17 @@ function Inventory() {
               }}
               label="Listing Price" sx={{ width: 125, mr: 2}}/>
 
-              <Button onClick={() => {AddSneaker(sneakerName, size, used, buyingPrice, listingPrice)}} color="inherit">Add</Button>
+              <Button onClick={() => {
+
+                AddSneaker(sneakerName, size, used, buyingPrice, listingPrice)
+
+                }
+
+                } color="inherit">Add</Button>
             </Toolbar>
           </AppBar>
         </Box>
 
-        <span></span>
         <span></span>
 
         <TableContainer component={Paper} sx={{
@@ -200,6 +221,17 @@ function Inventory() {
         </Table>
       </TableContainer>
 
+        <Grid className="inventory-stats" id="inventory-grid" container spacing={2}>
+            <Grid item xs={3}>
+                <h2>Total number of sneakers: {sneakerList.length}</h2>
+            </Grid>
+            <Grid item xs={5}>
+
+            </Grid>
+            <Grid item xs={4}>
+                <h2>Total Profit: {totalProfit}</h2>
+            </Grid>
+        </Grid>
       </Stack>
     </div>
   )

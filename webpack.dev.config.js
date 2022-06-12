@@ -13,6 +13,9 @@ module.exports = {
     filename: 'index_bundle.js',
     publicPath: '/'
   },
+  resolve: {
+    mainFields: ["main", "module"]
+  },
   module: {
     rules: [
       {
@@ -43,6 +46,7 @@ module.exports = {
     })
   ],
   target: 'electron-renderer',
+
   plugins: [
     new HtmlWebpackPlugin(),
     new webpack.DefinePlugin({
