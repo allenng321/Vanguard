@@ -7,12 +7,6 @@ const { spawn } = require('child_process')
 const defaultInclude = path.resolve(__dirname, 'src')
 
 module.exports = {
-  entry: './src/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'index_bundle.js',
-    publicPath: '/'
-  },
   resolve: {
     mainFields: ["main", "module"]
   },
@@ -55,7 +49,7 @@ module.exports = {
   ],
   devtool: 'cheap-source-map',
   devServer: {
-    contentBase: path.resolve(__dirname, 'dist'),
+    contentBase: path.resolve(__dirname, 'src'),
     stats: {
       colors: true,
       chunks: false,
