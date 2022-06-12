@@ -18,6 +18,21 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid'
 
+// Init MongoDB
+const { MongoClient } = require("mongodb");
+const uri =
+  "mongodb+srv://pikachuexeallen:6awdbEitbMqIZmog@vanguard-data.w3kgd.mongodb.net/?retryWrites=true&w=majority";
+
+const client = new MongoClient(uri);
+
+async function run() {
+  await client.connect();
+}
+run();
+
+const database = client.db('vanguard-app')
+const sneakerData = database.collection('sneaker-data')
+
 const dataToAdd = [
   {key: 1, name: 'Air Jordan 2', size: 5, used: 'Yes', buyingPrice: 1, listingPrice: 1},
 ];
