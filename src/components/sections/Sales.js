@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { Stack } from '@mui/material';
 
 import Table from '@mui/material/Table';
@@ -10,7 +10,32 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid'
 
+const { MongoClient } = require("mongodb");
+const uri =
+  "mongodb+srv://pikachuexeallen:6awdbEitbMqIZmog@vanguard-data.w3kgd.mongodb.net/?retryWrites=true&w=majority";
+
+const client = new MongoClient(uri);
+
+async function run() {
+  await client.connect();
+}
+run();
+
+const database = client.db('vanguard-app')
+const sneakerData = database.collection('sneaker-sold')
+
 function Sales() {
+  const [sneakerList, setSneakerList] = useState([{key: 1, name: 'Nike Dunk Low Panda', size: '9.5', used: 'No', buyingPrice: 110, soldPrice: 259}, {key: 2, name: 'Jordan 1 High Visionaire', size: '11.5', used: 'No', buyingPrice: 170, soldPrice: 310}])
+
+  useEffect( () => {
+    async function InitSoldSneakers() {
+      const allSoldSneakers = await sneakerData.find().toArray();
+
+      setSneakerList(allSoldSneakers);
+    }
+    InitSoldSneakers();
+}, []);
+
   return (
     <div className='right-section-pages'>
     <Stack spacing={4}>
@@ -38,10 +63,11 @@ function Sales() {
                 <TableCell sx={{pr: 3}}>Used</TableCell>
                 <TableCell >Buying Price</TableCell>
                 <TableCell >Sold Price</TableCell>
+                <TableCell >Profit</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {sneakerList.map((value) => (
+              {sneakerList.map((value) => (
                 <TableRow
                   key={value.key}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -52,12 +78,13 @@ function Sales() {
                   <TableCell >{value.size}</TableCell>
                   <TableCell >{value.used}</TableCell>
                   <TableCell >{value.buyingPrice}</TableCell>
-                  <TableCell >{value.listingPrice}</TableCell>
+                  <TableCell >{value.soldPrice}</TableCell>
+                  <TableCell >{value.soldPrice - value.buyingPrice}</TableCell>
                 </TableRow>
-              ))} */}
-              <TableRow>
+              ))}
+              {/* <TableRow>
                 <TableCell>Whats up</TableCell>
-              </TableRow>
+              </TableRow> */}
             </TableBody>
         </Table>
       </TableContainer>
