@@ -21,17 +21,14 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid'
 
-import { useForm, Controller } from "react-hook-form";
-
-
 const dataToAdd = [
-  {key: 1, name: 'Air Jordan 2', size: 5, used: 'Yes', buyingPrice: 100, listingPrice: 12},
+  {key: 1, name: 'Air Jordan 2', size: 5, used: 'Yes', buyingPrice: 1, listingPrice: 1},
 ];
 
 function Inventory() {
 
   const [sneakerList, setSneakerList] = useState(
-    [{key: 1, name: 'Air Jordan 2', size: 5, used: 'Yes', buyingPrice: 100, listingPrice: 12},
+    [{key: 1, name: 'Air Jordan 2', size: 5, used: 'Yes', buyingPrice: 1, listingPrice: 1},
   ]
     )
   const [sneakerName, setSneakerName] = useState('')
@@ -42,9 +39,15 @@ function Inventory() {
   const [listingPrice, setListingPrice] = useState(0)
   const [totalProfit, setTotalProfit] = useState(0)
 
+  const [searchText, setSearchText] = useState('');
+
   function AddSneaker(name, size, used, buyingPrice, listingPrice,) {
-    dataToAdd.push({key: dataToAdd[dataToAdd.length - 1].key + 1, name: name, size: size, used: used, buyingPrice: buyingPrice, listingPrice: listingPrice })
-    setSneakerList(dataToAdd)
+    let newRes = [];
+    sneakerList.forEach(sneaker => {
+      newRes.push(sneaker)
+    });
+    newRes.push({key: newRes[newRes.length - 1].key + 1, name: name, size: size, used: used, buyingPrice: buyingPrice, listingPrice: listingPrice })
+    setSneakerList(newRes)
 
     // Refresh Table
     setBuyingPrice(0)
@@ -52,6 +55,17 @@ function Inventory() {
     // Update Profit
     calculateProfit()
 
+  }
+
+  function DeleteSneaker(key) {
+    let newRes = [];
+    sneakerList.forEach(sneaker => {
+      if (sneaker.key !== key) {
+        newRes.push(sneaker);
+      }
+    });
+
+    setSneakerList(newRes);
   }
 
   function handleUsedCheckbox(event) {
@@ -66,18 +80,31 @@ function Inventory() {
   }
 
   function calculateProfit() {
-    let profitValueToAdd = 0
-    sneakerList.forEach(sneaker => {
+    setInterval(() => {
+      let profitValueToAdd = 0
+      sneakerList.forEach(sneaker => {
       let sneakerRealizedProfit = sneaker.listingPrice - sneaker.buyingPrice;
       profitValueToAdd += sneakerRealizedProfit;
-    });
+      console.log(sneaker)
+      });
 
-    const newProfit = profitValueToAdd
+      const newProfit = profitValueToAdd
 
-    setTotalProfit(newProfit);
+      setTotalProfit(newProfit);
+    }, 1000)
   }
 
-  const { register, handleSubmit, control } = useForm();
+  function updateFilteredSneakerList(searchText) {
+      let newRes = [];
+      sneakerList.forEach(sneaker => {
+        if (sneaker.name.includes(searchText)) {
+          newRes.push(sneaker);
+        }
+      })
+
+      setSneakerList(newRes)
+  }
+
 
 
   const getOpObj = option => {
@@ -97,6 +124,7 @@ function Inventory() {
           <AppBar position="static">
             <Toolbar>
               <Input placeholder="Search..." color='primary' sx={{width: 150, mr: 5}}
+              value={searchText}
               onChange={ (e) => {
                   setSearchText(e.target.value)
                 }
@@ -104,40 +132,12 @@ function Inventory() {
               onKeyPress={(ev) => {
                 console.log(`Pressed keyCode ${ev.key}`);
                 if(ev.key == 'Enter') {
-                  updateSneakerList(rows, searchText);
+                  updateFilteredSneakerList(searchText);
                   ev.preventDefault();
                 }
               }}
               ></Input>
-              <Autocomplete
-                id="sneaker-filter"
-                sx={{ width: 175, height: 50, marginTop: 0, mr: 5 }}
-                options={["Jordan 1"]}
-                renderInput={(params) => (
-                  <TextField {...params} label="Filter type..." />
-                )}
-                renderOption={(props, option, { inputValue }) => {
-                  const matches = match(option.title, inputValue);
-                  const parts = parse(option.title, matches);
 
-                  return (
-                    <li {...props}>
-                      <div>
-                        {parts.map((part, index) => (
-                          <span
-                            key={index}
-                            style={{
-                              fontWeight: part.highlight ? 700 : 400,
-                            }}
-                          >
-                            {part.text}
-                          </span>
-                        ))}
-                      </div>
-                    </li>
-                  );
-                }}
-              />
 
               <TextField
               value={sneakerName}
@@ -215,6 +215,13 @@ function Inventory() {
                   <TableCell >{value.used}</TableCell>
                   <TableCell >{value.buyingPrice}</TableCell>
                   <TableCell >{value.listingPrice}</TableCell>
+                  <TableCell style={{padding: 0}}> <Button color="inherit" style={{backgroundColor: '#dddddd'}} sx={{padding: 1}}
+
+                  > Sold </Button> </TableCell>
+                  <TableCell style={{padding: 0}}> <Button color="inherit" style={{backgroundColor: '#dddddd'}} sx={{padding: 1}}
+
+                    onClick={() => {DeleteSneaker(value.key)}}
+                  > Delete </Button> </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -229,7 +236,7 @@ function Inventory() {
 
             </Grid>
             <Grid item xs={4}>
-                <h2>Total Profit: {totalProfit}</h2>
+                <h2>Total Potential Profit: {totalProfit}</h2>
             </Grid>
         </Grid>
       </Stack>
