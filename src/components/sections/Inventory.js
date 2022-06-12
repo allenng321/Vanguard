@@ -125,6 +125,32 @@ const sneakerData = database.collection('sneaker-data')
       setTotalProfit(newProfit);
   }
 
+  async function MoveToSoldSneakers(key) {
+    await client.connect();
+    const database = client.db('vanguard-app')
+    const sneakerData = database.collection('sneaker-data')
+
+    const sneakerToMove = await sneakerData.findOne({key: key})
+    await DeleteSneaker(key)
+
+    await client.connect();
+    const databaseSold = client.db('vanguard-app')
+    const sneakerDataSold = databaseSold.collection('sneaker-sold')
+
+    const allSneakers = await sneakerDataSold.find().toArray();
+
+    let highestKey= -1;
+    allSneakers.forEach(sneaker => {
+      let currentKey = parseInt(sneaker.key)
+      if (highestKey < currentKey) {
+        highestKey = currentKey
+      }
+    });
+
+    sneakerDataSold.insertOne({key: highestKey + 1, name: sneakerToMove.name, size: sneakerToMove.size, used: sneakerToMove.used, buyingPrice: sneakerToMove.buyingPrice, soldPrice: sneakerToMove.listingPrice})
+
+  }
+
   function updateFilteredSneakerList(searchText) {
       let newRes = [];
       sneakerList.forEach(sneaker => {
@@ -135,7 +161,6 @@ const sneakerData = database.collection('sneaker-data')
 
       setSneakerList(newRes)
   }
-
 
 
   const getOpObj = option => {
@@ -247,7 +272,7 @@ const sneakerData = database.collection('sneaker-data')
                   <TableCell >{value.buyingPrice}</TableCell>
                   <TableCell >{value.listingPrice}</TableCell>
                   <TableCell style={{padding: 0}}> <Button color="inherit" style={{backgroundColor: '#dddddd'}} sx={{padding: 1}}
-
+                    onClick={() => {MoveToSoldSneakers(value.key)}}
                   > Sold </Button> </TableCell>
                   <TableCell style={{padding: 0}}> <Button color="inherit" style={{backgroundColor: '#dddddd'}} sx={{padding: 1}}
 
