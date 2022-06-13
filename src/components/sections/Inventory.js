@@ -19,7 +19,7 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid'
 import { db } from 'sneaks-api/models/Sneaker';
 
-// Init MongoDB
+// Init MongoDB (I feel safe to expose this mongodb url! Will be removed after a week of the hackathon!)
 const { MongoClient } = require("mongodb");
 const uri =
   "mongodb+srv://pikachuexeallen:6awdbEitbMqIZmog@vanguard-data.w3kgd.mongodb.net/?retryWrites=true&w=majority";

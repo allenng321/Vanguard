@@ -16,7 +16,6 @@ function LeftBar() {
         <Stack spacing={4}>
           <Button href="/inventory" variant="contained" >Inventory</Button>
           <Button href="/sales" variant="contained" >Sales</Button>
-          <Button href="/expense" variant="contained" >Expense</Button>
           <Button href="/news" variant="contained" >News</Button>
         </Stack>
       </Stack>

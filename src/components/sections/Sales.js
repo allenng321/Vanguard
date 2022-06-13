@@ -26,6 +26,7 @@ const sneakerData = database.collection('sneaker-sold')
 
 function Sales() {
   const [sneakerList, setSneakerList] = useState([{key: 1, name: 'Nike Dunk Low Panda', size: '9.5', used: 'No', buyingPrice: 110, soldPrice: 259}, {key: 2, name: 'Jordan 1 High Visionaire', size: '11.5', used: 'No', buyingPrice: 170, soldPrice: 310}])
+  const [totalProfit, setTotalProfit] = useState(78)
 
   useEffect( () => {
     async function InitSoldSneakers() {
@@ -34,6 +35,7 @@ function Sales() {
       setSneakerList(allSoldSneakers);
     }
     InitSoldSneakers();
+
 }, []);
 
   return (
@@ -45,7 +47,7 @@ function Sales() {
       <span></span>
 
       <TableContainer component={Paper} sx={{
-            height: 550,
+            height: 475,
             "&::-webkit-scrollbar": {
             width: 8
             },
@@ -55,7 +57,7 @@ function Sales() {
             "&::-webkit-scrollbar-thumb": {
             backgroundColor: '#1976d2',
             borderRadius: 2}}}>
-          <Table sx={{ minWidth: 650, maxHeight: 400}} aria-label="simple table">
+          <Table sx={{ minWidth: 650, maxHeight: 475}} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell sx={{pr: 38}}>Sneaker Name</TableCell>
@@ -88,6 +90,7 @@ function Sales() {
             </TableBody>
         </Table>
       </TableContainer>
+
     </Stack>
     </div>
   )

@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, Route, Switch } from "wouter";
 
 import Inventory from './sections/Inventory.js';
-import Expense from './sections/Expense.js';
 import News from './sections/News.js';
 import Sales from './sections/Sales.js'
 
@@ -11,7 +10,6 @@ function RightSection() {
      <div>
         <Switch>
           <Route path="/inventory" component={Inventory} />
-          <Route path="/expense" component={Expense} />
           <Route path="/news" component={News} />
           <Route path="/sales" component={Sales} />
       </Switch>
